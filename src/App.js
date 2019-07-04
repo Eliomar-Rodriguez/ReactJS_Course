@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import './App.css';
+import classes from './App.css';
 import Person from "./Person/Person";
 import ValidationComponent from './ValidationComponent/ValidationComponent';
 import CharComponent from './CharComponent/CharComponent';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
   state = {
@@ -15,10 +16,6 @@ class App extends Component {
     showPersons: false,
     userInput: ''
   }
-
-  /*state = {
-    userInput: ''
-  }*/
 
   deletePersonHandler = (personIndex) => {
     //const persons = this.state.persons.slice(); //se puede usar esta forma o
@@ -63,38 +60,32 @@ class App extends Component {
   }
 
   render() {
-    const style = {
-      backgroundColor: 'green',
-      color: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer'
-    }
 
     let persons = null;
+    let btnClass = '';
     if (this.state.showPersons) {
       persons = (
         <div>
           {this.state.persons.map((person, index) => {
-            return <Person
-              click={() => this.deletePersonHandler(index)}
-              name={person.name}
-              age={person.age}
-              key={person.id}
-              changed={(event) => this.nameChangedHandler(event, person.id)}
-            />
+            return <ErrorBoundary key={person.id}>
+              <Person
+                click={() => this.deletePersonHandler(index)}
+                name={person.name}
+                age={person.age}
+                changed={(event) => this.nameChangedHandler(event, person.id)} />
+            </ErrorBoundary>
           })}
         </div>
       );
-      style.backgroundColor = 'red';
+      btnClass = classes.red;
+      //style.backgroundColor = 'red';
     }
 
-    const classes = [];
+    const assignedClasses = [];
     if (this.state.persons.length <= 2)
-      classes.push(classes.red)
+      assignedClasses.push(classes.red)
     if (this.state.persons.length <= 1)
-      classes.push(classes.bold)
+      assignedClasses.push(classes.bold)
 
     let charComponents = null;
 
@@ -116,9 +107,9 @@ class App extends Component {
     return (
       <div className={classes.App} >
         <h1>Hi, I'm a React App</h1>
-        <p className={classes.join(' ')}>This is rally working!</p>
+        <p className={assignedClasses.join(' ')}>This is really working!</p>
         <button
-          style={style}
+          className={btnClass}
           onClick={this.togglePersonHandler}>
           Toggle person
         </button>
