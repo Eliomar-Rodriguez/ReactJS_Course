@@ -3,6 +3,11 @@ import classes from './App.css';
 import Persons from "../components/Persons/Persons";
 import Cockpit from '../components/Cockpit/Cockpit';
 class App extends Component {
+  constructor(props) {
+    super(props);
+    console.log('[App.js] constructor');
+  }
+
   state = {
     persons: [
       { id: 'kjn123', name: 'Eliomar', age: 22 },
@@ -11,8 +16,22 @@ class App extends Component {
     ],
     otherState: 'some other value',
     showPersons: false,
-    userInput: ''
+    showCockpit: true
   }
+
+  /*static getDerivedStateFromProps(props, state){
+    console.log('[App.js] getDerivedStateFromProps', props);
+    return state;
+  }*/
+
+  componentDidMount() {
+    console.log('[App.js] componentDidMount');
+  }
+
+  componentWillMount() {
+    console.log('[App.js] componentWillMount');
+  }
+
 
   deletePersonHandler = (personIndex) => {
     //const persons = this.state.persons.slice(); //se puede usar esta forma o
@@ -57,6 +76,7 @@ class App extends Component {
   }
 
   render() {
+    console.log('[App.js] render');
 
     let persons = null;
 
@@ -64,20 +84,26 @@ class App extends Component {
       persons = (
         <div>
           <Persons
-          persons={this.state.persons}
-          clicked={this.deletePersonHandler}
-          changed={this.nameChangedHandler}  />
+            persons={this.state.persons}
+            clicked={this.deletePersonHandler}
+            changed={this.nameChangedHandler} />
         </div>
       );
     }
 
-    
+
     return (
       <div className={classes.App} >
-       <Cockpit
-       showPersons={this.state.showPersons}
-       persons={this.state.persons}
-       clicked={this.togglePersonHandler}/> 
+        <button
+          onClick={() => this.setState({ showCockpit: !this.state.showCockpit })}
+        >Remove cockpit</button>
+        {this.state.showCockpit ? (
+          <Cockpit
+            title={this.props.title}
+            showPersons={this.state.showPersons}
+            personsLength={this.state.persons.length}
+            clicked={this.togglePersonHandler} />)
+          : null}
         {
           persons // puede manejarse de esta manera, o con { this.state.showPersons ? algo para true : algo para false }
         }
