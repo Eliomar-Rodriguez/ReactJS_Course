@@ -12,6 +12,10 @@ class persons extends PureComponent { // pure component se encarga de validar si
             return false;
         }
     };
+    componentWillReceiveProps(nextProps){// si se modifica el state entonces aqui cae ese evento y viene el nuevo state
+        console.log('[UPDATE Persons.js] componentWillReceiveProps', nextProps)
+    }
+
     render() {
         return (this.props.persons.map((person, index) => {
             return <Person
