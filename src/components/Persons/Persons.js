@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import Person from './Person/Person';
 
 class persons extends PureComponent { // pure component se encarga de validar si hubo cambios y si es asi, entonces renderiza, sino no
-    shouldComponentUpdate(nextProps, nextState) {
+    /*shouldComponentUpdate(nextProps, nextState) {
         console.log("[Persons.js] shouldComponentUpdate");
         if (nextProps.persons !== this.props.persons ||
             nextProps.clicked !== this.props.clicked ||
@@ -11,7 +11,7 @@ class persons extends PureComponent { // pure component se encarga de validar si
         } else {
             return false;
         }
-    };
+    };*/
     componentWillReceiveProps(nextProps){// si se modifica el state entonces aqui cae ese evento y viene el nuevo state
         console.log('[UPDATE Persons.js] componentWillReceiveProps', nextProps)
     }

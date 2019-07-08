@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import classes from './App.css';
 import Persons from "../components/Persons/Persons";
 import Cockpit from '../components/Cockpit/Cockpit';
+import withClass from '../components/hoc/withClass';
+import Aux from '../components/hoc/Auxiliary';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +19,8 @@ class App extends Component {
     ],
     otherState: 'some other value',
     showPersons: false,
-    showCockpit: true
+    showCockpit: true,
+    changeCounter: 0
   }
 
   /*static getDerivedStateFromProps(props, state){
@@ -54,8 +58,13 @@ class App extends Component {
     const persons = [...this.state.persons];
     persons[personIndex] = person;
 
-    this.setState({ persons: persons })
-  }
+    this.setState((prevState, props) => { // la forma mas recomendada de actualizar el state si depende del previous state
+      return {
+        persons: persons,
+        changeCounter: prevState.changeCounter + 1
+      };
+    });
+  };
 
   inputChangedHandler = (event) => {
     this.setState({
@@ -93,7 +102,7 @@ class App extends Component {
 
 
     return (
-      <div className={classes.App} >
+      <Aux >
         <button
           onClick={() => this.setState({ showCockpit: !this.state.showCockpit })}
         >Remove cockpit</button>
@@ -107,10 +116,10 @@ class App extends Component {
         {
           persons // puede manejarse de esta manera, o con { this.state.showPersons ? algo para true : algo para false }
         }
-      </div>
+      </Aux>
     )
   }
 }
 
 
-export default App;
+export default withClass(App, classes.App);
